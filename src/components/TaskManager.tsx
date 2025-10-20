@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
+import Card from './Card';
+import useLocalStorage from '../hooks/useLocalStorage';
+
+interface Task {
+  id: number;
+  text: string;
+  completed: boolean;
+  createdAt: string;
+}
 
 /**
  * Custom hook for managing tasks with localStorage persistence
  */
 const useLocalStorageTasks = () => {
-  // Initialize state from localStorage or with empty array
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem('tasks');
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  });
-
-  // Update localStorage when tasks change
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+  const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
 
   // Add a new task
-  const addTask = (text) => {
+  const addTask = (text: string) => {
     if (text.trim()) {
       setTasks([
         ...tasks,
@@ -32,7 +32,7 @@ const useLocalStorageTasks = () => {
   };
 
   // Toggle task completion status
-  const toggleTask = (id) => {
+  const toggleTask = (id: number) => {
     setTasks(
       tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
@@ -41,7 +41,7 @@ const useLocalStorageTasks = () => {
   };
 
   // Delete a task
-  const deleteTask = (id) => {
+  const deleteTask = (id: number) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
@@ -51,10 +51,10 @@ const useLocalStorageTasks = () => {
 /**
  * TaskManager component for managing tasks
  */
-const TaskManager = () => {
+const TaskManager: React.FC = () => {
   const { tasks, addTask, toggleTask, deleteTask } = useLocalStorageTasks();
   const [newTaskText, setNewTaskText] = useState('');
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
   // Filter tasks based on selected filter
   const filteredTasks = tasks.filter((task) => {
@@ -64,15 +64,15 @@ const TaskManager = () => {
   });
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     addTask(newTaskText);
     setNewTaskText('');
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      <h2 className="text-2xl font-bold mb-6">Task Manager</h2>
+    <Card className="max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Task Manager</h2>
 
       {/* Task input form */}
       <form onSubmit={handleSubmit} className="mb-6">
@@ -82,7 +82,7 @@ const TaskManager = () => {
             value={newTaskText}
             onChange={(e) => setNewTaskText(e.target.value)}
             placeholder="Add a new task..."
-            className="flex-grow px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+            className="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
           />
           <Button type="submit" variant="primary">
             Add Task
@@ -125,7 +125,7 @@ const TaskManager = () => {
           filteredTasks.map((task) => (
             <li
               key={task.id}
-              className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-700"
+              className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <input
@@ -136,7 +136,7 @@ const TaskManager = () => {
                 />
                 <span
                   className={`${
-                    task.completed ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                    task.completed ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white'
                   }`}
                 >
                   {task.text}
@@ -161,8 +161,8 @@ const TaskManager = () => {
           {tasks.filter((task) => !task.completed).length} tasks remaining
         </p>
       </div>
-    </div>
+    </Card>
   );
 };
 
-export default TaskManager; 
+export default TaskManager;

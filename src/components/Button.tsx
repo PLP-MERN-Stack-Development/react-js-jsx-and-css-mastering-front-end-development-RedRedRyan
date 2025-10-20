@@ -1,23 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  onClick?: () => void;
+  children: React.ReactNode;
+  className?: string;
+  type?: 'button' | 'submit' | 'reset';
+  [key: string]: unknown; // For additional props
+}
 
 /**
  * Button component with different variants
- * @param {Object} props - Component props
- * @param {string} props.variant - Button variant (primary, secondary, danger)
- * @param {string} props.size - Button size (sm, md, lg)
- * @param {boolean} props.disabled - Whether the button is disabled
- * @param {function} props.onClick - Click handler function
- * @param {React.ReactNode} props.children - Button content
+ * @param {ButtonProps} props - Component props
  * @returns {JSX.Element} - Button component
  */
-const Button = ({ 
+const Button: React.FC<ButtonProps> = ({ 
   variant = 'primary', 
   size = 'md', 
   disabled = false, 
   onClick, 
   children,
   className = '',
+  type = 'button',
   ...rest 
 }) => {
   // Base classes
@@ -47,6 +53,7 @@ const Button = ({
   
   return (
     <button
+      type={type}
       className={buttonClasses}
       disabled={disabled}
       onClick={onClick}
@@ -57,13 +64,4 @@ const Button = ({
   );
 };
 
-Button.propTypes = {
-  variant: PropTypes.oneOf(['primary', 'secondary', 'danger', 'success', 'warning']),
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  disabled: PropTypes.bool,
-  onClick: PropTypes.func,
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-};
-
-export default Button; 
+export default Button;
