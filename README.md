@@ -2,6 +2,8 @@
 
 A modern React application demonstrating component architecture, state management, hooks usage, and API integration with beautiful Tailwind CSS styling.
 
+Visit 'https://reactweek3.netlify.app/'
+
 ## 🚀 Features
 
 ### ✅ Task 1: Component Architecture
@@ -46,11 +48,12 @@ A modern React application demonstrating component architecture, state managemen
 - **Vite** - Fast build tool and development server
 - **ESLint** - Code linting and formatting
 
+
 ## 📦 Installation
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone <https://github.com/RedRedRyan/react-js-jsx-and-css-mastering-front-end-development-RedRedRyan>
 cd react-js-jsx-and-css-mastering-front-end-development-RedRedRyan
 ```
 
@@ -65,6 +68,8 @@ npm run dev
 ```
 
 4. Open your browser and navigate to `http://localhost:5173`
+
+
 
 ## 🏗️ Project Structure
 
@@ -201,7 +206,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact
 
 - **Author**: RedRedRyan
-- **Email**: [your-email@example.com]
+- **Email**: [ryankipkorir2002@gmail.com]
 - **GitHub**: [@RedRedRyan](https://github.com/RedRedRyan)
 
 ---
